@@ -6,10 +6,21 @@ import requests
 import smtplib, ssl
 import getpass
 
+import mailchimp_marketing as MailchimpMarketing
+from mailchimp_marketing.api_client import ApiClientError
+
 smtp_server = "smtp.gmail.com"
 port = 587
 sender_email = "joselvdm@umich.edu"
-password = getpass.getpass("Email password: ")
+#password = getpass.getpass("Email password: ")
+
+mailchimp = MailchimpMarketing.Client()
+mailchimp.set_config({
+  "api_key": "40cec2ec47605eb09286969b84f5eaeb-us11",
+  "server": "us11"
+})
+
+list_id = "4abc78d557"
 
 filename = "students.csv"
 
@@ -67,17 +78,38 @@ def send_email(data):
         server.quit()
     return 
 
+def add_to_list(member_info):
+    try:
+        #to add a new member
+        response = mailchimp.lists.add_list_member(list_id, member_info)
+
+        # to update or insert a member
+        # response = mailchimp.lists.set_list_member(list_id, member_info["email_address"], member_info)
+        print("response: {}".format(response))
+    except ApiClientError as error:
+        print("An exception occurred: {}".format(error.text))
+
 def process_data(str_in):
     [um_id, first, last, uniqname] = process_string(str_in)
     [fullname, email] = get_full_name(uniqname)
     data = [uniqname, fullname, first, last, um_id, email]
     write_data(data)
-    send_email(data)
+    #send_email(data)
+
+    member_info = {
+        "email_address": email,
+        "status": "subscribed"
+    }
+    add_to_list(member_info)
+
     return 
 
 
 
 if __name__ == "__main__":
+
+    response = mailchimp.ping.get()
+    print(response)
 
     while True:
         str_in = input("")
