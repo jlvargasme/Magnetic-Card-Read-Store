@@ -25,7 +25,7 @@ list_id = "4abc78d557"
 filename = "students.csv"
 
 def process_string(str_in):
-    inputs = str_in.split("^")
+    inputs = str_in.split("&")
     um_id = inputs[0][8:16]
     
     name = inputs[1]
@@ -59,24 +59,24 @@ def write_data(data):
     file.close()
     return
 
-def send_email(data):
-    receiver_email = data[5]
-    context = ssl.create_default_context()
-    try:
-        server = smtplib.SMTP(smtp_server, port)
-        server.starttls(context=context)
-        server.login(sender_email, password)
-        message = """\
-        Subject: Test email
+# def send_email(data):
+#     receiver_email = data[5]
+#     context = ssl.create_default_context()
+#     try:
+#         server = smtplib.SMTP(smtp_server, port)
+#         server.starttls(context=context)
+#         server.login(sender_email, password)
+#         message = """\
+#         Subject: Test email
 
-        This message was sent from Python."""
+#         This message was sent from Python."""
 
-        server.sendmail(sender_email, receiver_email, message)
-    except Exception as e:
-        print(e)
-    finally:
-        server.quit()
-    return 
+#         server.sendmail(sender_email, receiver_email, message)
+#     except Exception as e:
+#         print(e)
+#     finally:
+#         server.quit()
+#     return 
 
 def add_to_list(member_info):
     try:
@@ -98,7 +98,11 @@ def process_data(str_in):
 
     member_info = {
         "email_address": email,
-        "status": "subscribed"
+        "status": "subscribed",
+        "merge_fields": {
+            "FNAME": fullname.split(" ")[0],
+            "LNAME": last.title()
+        }
     }
     add_to_list(member_info)
 
