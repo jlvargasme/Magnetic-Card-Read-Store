@@ -1,7 +1,7 @@
 import usb.core
 import usb.backend.libusb1
 
-dev=usb.core.find(idVendor=0xc216, idProduct=0x0180)
+dev=usb.core.find(idVendor=0xc216, idProduct=0x0180, find_all=True)
 ep=dev[0].interfaces()[0].endpoints()[0]
 i=dev[0].interfaces()[0].bInterfaceNumber
 dev.reset()
