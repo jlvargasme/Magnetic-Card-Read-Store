@@ -1,8 +1,4 @@
-# Logic to read input from magnetic card reader and upload user
-# to database
-
-import json
-import requests
+# Logic to read input from magnetic card reader and write to csv
 
 filename = "students.csv"
 
