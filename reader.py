@@ -18,19 +18,6 @@ def process_string(str_in):
 
     return [um_id, first, last, uniqname]
 
-def get_full_name(uniqname):
-
-    url = "https://mcommunity.umich.edu/mcPeopleService/people/" + uniqname
-    header = {
-        "Content-Type": "application/json"
-    }
-    profile = requests.get(url, headers=header).text
-    profile_json = json.loads(profile)
-    fullname = profile_json["person"]["displayName"]
-    email = profile_json["person"]["email"]
-
-    return [fullname, email]
-
 def write_data(data):
     file = open(filename, "a")
 
@@ -41,33 +28,22 @@ def write_data(data):
     file.close()
     return
 
-def add_to_list():
-
-    
-    return
-
-
 def process_data(str_in):
     [um_id, first, last, uniqname] = process_string(str_in)
-    [fullname, email] = get_full_name(uniqname)
-    data = [uniqname, fullname, first, last, um_id, email]
+    email = uniqname + "@umich.edu"
+    data = [uniqname, first, last, um_id, email]
     write_data(data)
-
-    member_info = {
-        "email_address": email,
-        "status": "subscribed",
-        "merge_fields": {
-            "FNAME": fullname.split(" ")[0],
-            "LNAME": last.title()
-        }
-    }
-    add_to_list(member_info)
 
     return 
 
-
-
 if __name__ == "__main__":
+
+    file = open(filename, "a+")
+
+    if (file.read(8) != "uniqname"):
+        # Add header column for new file
+        file.close()
+        write_data(["uniqname", "first", "last", "UMID", "email"])
 
     while True:
         str_in = input("")
