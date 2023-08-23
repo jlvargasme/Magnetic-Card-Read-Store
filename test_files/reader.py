@@ -1,4 +1,5 @@
 # Logic to read input from magnetic card reader and write to csv
+import os
 
 filename = "students.csv"
 
@@ -34,11 +35,11 @@ def process_data(str_in):
 
 if __name__ == "__main__":
 
-    file = open(filename, "a+")
+    file = open(filename, "a+") 
 
-    if (file.read(8) != "uniqname"):
+    if (os.stat("./students.csv").st_size == 0):
         # Add header column for new file
-        file.close()
+        file.close() # close file, will be opened in write_data
         write_data(["uniqname", "first", "last", "UMID", "email"])
 
     while True:
