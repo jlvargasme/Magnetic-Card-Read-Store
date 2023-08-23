@@ -1,7 +1,12 @@
 import usb.core
 import usb.backend.libusb1
 
-dev=usb.core.find(idVendor=0xc216, idProduct=0x0180, find_all=True)
+dev=usb.core.find(idVendor=0xc216, idProduct=0x0180)
+
+if dev is None:
+    print("No MSR90 MagStripe readers detected, exiting.")
+    exit(-1)
+
 ep=dev[0].interfaces()[0].endpoints()[0]
 i=dev[0].interfaces()[0].bInterfaceNumber
 dev.reset()
@@ -23,3 +28,5 @@ while True:
     result_str = byte_str.split('\x00',1)[0]
 
     print(result_str)
+
+exit(-1)
