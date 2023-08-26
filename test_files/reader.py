@@ -4,7 +4,7 @@ import os
 filename = "students.csv"
 
 def process_string(str_in):
-    inputs = str_in.split("&")
+    inputs = str_in.split("^")
     um_id = inputs[0][8:16]
     
     name = inputs[1]

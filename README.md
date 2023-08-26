@@ -27,7 +27,7 @@ Runs the main card reader code. Based on peripheral.py and reader.py from Test F
 ### serial_ports.py
 Lists connected serial devices.
 
-### peripheral.py
+### peripheral.py BROKEN lol
 Reads from the MSR90 MagStripe reader USB device.  
 Prints string read from a card's magstripe to stdout.
 
